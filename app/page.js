@@ -1,6 +1,15 @@
-import Form from "next/form";
+"use client";
+
+import { useState, useEffect } from "react";
+import { DateTime } from "luxon";
 
 export default function Home() {
+  useEffect(() => {
+    const exmpl = DateTime.local();
+
+    console.log(exmpl);
+  }, []);
+
   return (
     <main className="">
       <h1 className="mb-4 text-4xl sm:text-5xl">Age Calculator</h1>
