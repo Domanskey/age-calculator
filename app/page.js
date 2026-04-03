@@ -10,6 +10,7 @@ export default function Home() {
 
   const countDiff = () => {
     if (!date) setDiff(null);
+    else if (date >= now) setDiff(-1);
     else {
       setDiff(now.diff(date, ["years", "months"]).toObject());
       console.log(now.diff(date, ["years", "months"]).toObject());
@@ -39,11 +40,14 @@ export default function Home() {
           Calculate
         </button>
       </form>
-      {diff && (
-        <p className="sm:text-xl">
-          you're {diff.years} years {Math.floor(diff.months)} months old
-        </p>
-      )}
+      {diff &&
+        (diff === -1 ? (
+          <p className="sm:text-xl">Wrong date!</p>
+        ) : (
+          <p className="sm:text-xl">
+            you're {diff.years} years {Math.floor(diff.months)} months old
+          </p>
+        ))}
     </main>
   );
 }
