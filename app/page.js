@@ -1,22 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DateTime } from "luxon";
 
 export default function Home() {
-  useEffect(() => {
-    const exmpl = DateTime.local();
+  const [date, setDate] = useState(null);
+  const [diff, setDiff] = useState(null);
+  const now = DateTime.local();
 
-    console.log(exmpl);
-  }, []);
+  const countDiff = () => {
+    if (!date) setDiff(null);
+    else {
+      setDiff(now.diff(date, ["years", "months"]).toObject());
+      console.log(now.diff(date, ["years", "months"]).toObject());
+    }
+  };
 
   return (
     <main className="">
       <h1 className="mb-4 text-4xl sm:text-5xl">Age Calculator</h1>
       <form className="text-md mb-4 flex min-w-2xs flex-col gap-2 text-lg sm:min-w-96 sm:text-xl">
         <label htmlFor="date">Enter your birth date:</label>
-        <input
+        <input //YYYY-MM-DD
           className="rounded-md border border-zinc-950 p-1 dark:border-zinc-50"
+          onChange={(e) => setDate(DateTime.fromISO(e.target.value))}
           type="date"
           id="date"
           name="date"
@@ -24,11 +31,19 @@ export default function Home() {
           minLength="4"
           maxLength="8"
         />
-        <button className="rounded-md bg-zinc-950 p-1 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-950">
+        <button
+          type="button" // not to submit
+          className="cursor-pointer rounded-md bg-zinc-950 p-1 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-950"
+          onClick={countDiff}
+        >
           Calculate
         </button>
       </form>
-      <p className="sm:text-xl">you're 21 years 10 months old</p>
+      {diff && (
+        <p className="sm:text-xl">
+          you're {diff.years} years {Math.floor(diff.months)} months old
+        </p>
+      )}
     </main>
   );
 }
