@@ -10,10 +10,9 @@ export default function Home() {
 
   const countDiff = () => {
     if (!date) setDiff(null);
-    else if (date >= now) setDiff(-1);
+    else if (date >= now || date === -1) setDiff(-1);
     else {
       setDiff(now.diff(date, ["years", "months"]).toObject());
-      console.log(now.diff(date, ["years", "months"]).toObject());
     }
   };
 
@@ -22,9 +21,12 @@ export default function Home() {
       <h1 className="mb-4 text-4xl sm:text-5xl">Age Calculator</h1>
       <form className="text-md mb-4 flex min-w-2xs flex-col gap-2 text-lg sm:min-w-96 sm:text-xl">
         <label htmlFor="date">Enter your birth date:</label>
-        <input //YYYY-MM-DD
+        <input //YYYY-MM-DD or <empty string> if wrong
           className="rounded-md border border-zinc-950 p-1 dark:border-zinc-50"
-          onChange={(e) => setDate(DateTime.fromISO(e.target.value))}
+          onChange={(e) => {
+            if (e.target.value === "") setDate(-1);
+            else setDate(DateTime.fromISO(e.target.value));
+          }}
           type="date"
           id="date"
           name="date"
